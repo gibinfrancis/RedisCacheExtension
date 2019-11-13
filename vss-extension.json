@@ -1,0 +1,43 @@
+{
+    "manifestVersion": 1,
+    "id": "redis-cache-clear",
+    "name": "Redis Cache Clear",
+    "version": "1.0.4",
+    "publisher": "gbnz",
+    "public": true,
+    "targets": [
+        {
+            "id": "Microsoft.VisualStudio.Services"
+        }
+    ],    
+    "description": "Extention to clear specific key or run flush all command in the redis server",
+    "categories": [
+        "Azure Pipelines"
+    ],
+    "icons": {
+        "default": "images/extension-icon.png"
+    },
+    "files": [
+        {
+            "path" : "redisCacheClear"
+        }
+    ],
+    "content": {
+        "details": {
+            "path": "overview.md"
+        }
+    },
+    "contributions": [
+        {
+            "id": "rediscacheclear-release-task",
+            "type": "ms.vss-distributed-task.task",
+            "targets": [
+                "ms.vss-distributed-task.tasks"
+            ],
+            "properties": {
+                "name": "rediscacheclear",
+                "icon" : "images/extension-icon.png"
+            }
+        }
+    ]
+}
