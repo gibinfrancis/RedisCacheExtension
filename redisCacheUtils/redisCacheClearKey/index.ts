@@ -1,6 +1,6 @@
 import tl = require('azure-pipelines-task-lib/task');
-var redis = require('redis');
-var bluebird = require("bluebird");
+var redis = require('../node_modules/redis');
+var bluebird = require("../node_modules/bluebird");
 
 bluebird.promisifyAll(redis.RedisClient.prototype);
 bluebird.promisifyAll(redis.Multi.prototype);
@@ -14,6 +14,8 @@ async function run() {
         const _redisport: string = tl.getInput('redisport', true)!;
         //key to authenticate to the redis server
         const _rediskey: string = tl.getInput('rediskey', true)!;
+         //prefix key in the redis server
+         const _redisprefix: string = tl.getInput('redisprefix', false)!;
         //Cache key which need to be deleted
         const _redisCachekey: string = tl.getInput('rediscachekey', true)!;
         
@@ -29,38 +31,25 @@ async function run() {
 
         }
         
-        //creating redis connetion
-        var client = redis.createClient( _redisport, _redishost,
-        {
+        //creating redis options
+        var _redisOptions = {
             auth_pass : _rediskey,
             tls : {
                 servername : _redishost
-            }
-        });
+            },
+            prefix : (_redisprefix == '' || _redisprefix == null) ? null :  _redisprefix
+        };
 
-        //Chekcing the cache key is '*'
-        //If the value is '*' then it will be flushed
-        //other wise the specific key will be deleted
-        if(_redisCachekey == '*') 
+        //creating redis connetion
+        var client = redis.createClient(_redisport, _redishost, _redisOptions);
+
+        //deleteing the specific key from redis server
+        var delKeyResult = await client.del(_redisCachekey);
+        if(delKeyResult != null) 
         {
-            //flushing the redis server
-            var flushallresult = await client.flushall();
-            if(flushallresult!= null)
-            {
-                tl.setResult(tl.TaskResult.Succeeded, 'Cache flushed successfully');
-                console.log('Cache flushed successfully');
-            }
-        }
-        else
-        {
-            //deleteing the specific key from redis server
-            var delKeyResult = await client.del(_redisCachekey);
-            if(delKeyResult != null) 
-            {
-                //Seting the Status of the task
-                tl.setResult(tl.TaskResult.Succeeded, 'Cache key ' + _redisCachekey + ' cleared successfully');
-                console.log('Cache key ' + _redisCachekey + ' cleared successfully');
-            }
+            //Seting the Status of the task
+            tl.setResult(tl.TaskResult.Succeeded, 'Cache key ' + _redisCachekey + ' cleared successfully');
+            console.log('Cache key ' + _redisCachekey + ' cleared successfully');
         }
         
         //closing the connection to the redis server

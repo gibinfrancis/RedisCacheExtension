@@ -9,6 +9,7 @@
   "author": "Gibin Francis",
   "license": "ISC",
   "dependencies": {
+    "@types/q": "^1.5.2",
     "azure-pipelines-task-lib": "^2.9.3",
     "bluebird": "^3.7.0",
     "redis": "^2.8.0",

@@ -37,20 +37,21 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var tl = require("azure-pipelines-task-lib/task");
-var redis = require('redis');
-var bluebird = require("bluebird");
+var redis = require('../node_modules/redis');
+var bluebird = require("../node_modules/bluebird");
 bluebird.promisifyAll(redis.RedisClient.prototype);
 bluebird.promisifyAll(redis.Multi.prototype);
 function run() {
     return __awaiter(this, void 0, void 0, function () {
-        var _redishost, _redisport, _rediskey, _redisCachekey, client, flushallresult, delKeyResult, err_1;
+        var _redishost, _redisport, _rediskey, _redisprefix, _redisCachekey, _redisOptions, client, delKeyResult, err_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    _a.trys.push([0, 6, , 7]);
+                    _a.trys.push([0, 3, , 4]);
                     _redishost = tl.getInput('redishost', true);
                     _redisport = tl.getInput('redisport', true);
                     _rediskey = tl.getInput('rediskey', true);
+                    _redisprefix = tl.getInput('redisprefix', false);
                     _redisCachekey = tl.getInput('rediscachekey', true);
                     //Checking for all required fields
                     if (_redishost == '' ||
@@ -61,43 +62,34 @@ function run() {
                         tl.setResult(tl.TaskResult.Failed, 'Bad input was given');
                         return [2 /*return*/];
                     }
-                    client = redis.createClient(_redisport, _redishost, {
+                    _redisOptions = {
                         auth_pass: _rediskey,
                         tls: {
                             servername: _redishost
-                        }
-                    });
-                    if (!(_redisCachekey == '*')) return [3 /*break*/, 2];
-                    return [4 /*yield*/, client.flushall()];
+                        },
+                        prefix: (_redisprefix == '' || _redisprefix == null) ? null : _redisprefix
+                    };
+                    client = redis.createClient(_redisport, _redishost, _redisOptions);
+                    return [4 /*yield*/, client.del(_redisCachekey)];
                 case 1:
-                    flushallresult = _a.sent();
-                    if (flushallresult != null) {
-                        tl.setResult(tl.TaskResult.Succeeded, 'Cache flushed successfully');
-                        console.log('Cache flushed successfully');
-                    }
-                    return [3 /*break*/, 4];
-                case 2: return [4 /*yield*/, client.del(_redisCachekey)];
-                case 3:
                     delKeyResult = _a.sent();
                     if (delKeyResult != null) {
                         //Seting the Status of the task
                         tl.setResult(tl.TaskResult.Succeeded, 'Cache key ' + _redisCachekey + ' cleared successfully');
                         console.log('Cache key ' + _redisCachekey + ' cleared successfully');
                     }
-                    _a.label = 4;
-                case 4: 
-                //closing the connection to the redis server
-                return [4 /*yield*/, client.quit()];
-                case 5:
+                    //closing the connection to the redis server
+                    return [4 /*yield*/, client.quit()];
+                case 2:
                     //closing the connection to the redis server
                     _a.sent();
                     return [2 /*return*/];
-                case 6:
+                case 3:
                     err_1 = _a.sent();
                     //Seting the Status of the task in case if any exception
                     tl.setResult(tl.TaskResult.Failed, err_1.message);
-                    return [3 /*break*/, 7];
-                case 7: return [2 /*return*/];
+                    return [3 /*break*/, 4];
+                case 4: return [2 /*return*/];
             }
         });
     });

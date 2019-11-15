@@ -1,18 +1,18 @@
 {
     "$schema": "https://raw.githubusercontent.com/Microsoft/azure-pipelines-task-lib/master/tasks.schema.json",
-    "id": "f93c2512-0abb-45dd-80f0-a1f43b1080ad",
-    "name": "rediscacheclear",
-    "friendlyName": "Redis Cache Clear",
-    "description": "Extention to clear specific key or run flush all command in the redis server",
+    "id": "98e620c4-e2ad-47cd-bda0-41b028296cbb",
+    "name": "redisCacheClearKey",
+    "friendlyName": "Redis Cache Clear Key",
+    "description": "Clear specific key in the redis server",
     "helpMarkDown": "",
     "category": "Utility",
     "author": "Gibin Francis",
     "version": {
         "Major": 1,
         "Minor": 0,
-        "Patch": 4
+        "Patch": 5
     },
-    "instanceNameFormat": "Redis Cache Clear",
+    "instanceNameFormat": "Redis Cache Clear Key",
     "inputs": [
         {
             "name": "redishost",
@@ -33,10 +33,18 @@
         {
             "name": "rediskey",
             "type": "string",
-            "label": "Redis key",
+            "label": "Redis Authentiction key",
             "defaultValue": "",
             "required": true,
             "helpMarkDown": "Redis Authentiction Key"
+        },
+        {
+            "name": "redisprefix",
+            "type": "string",
+            "label": "Redis prefix key",
+            "defaultValue": "",
+            "required": false,
+            "helpMarkDown": "Redis prefix Key"
         },
         {
             "name": "rediscachekey",
@@ -44,7 +52,7 @@
             "label": "Redis Cache key",
             "defaultValue": "",
             "required": true,
-            "helpMarkDown": "Cache key to get deleted or Use '*' to flush all from the server"
+            "helpMarkDown": "Cache key to get deleted from the server"
         }        
     ],
     "execution": {

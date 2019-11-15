@@ -70,8 +70,60 @@ describe('Cache Clear Tests', function () {
     });
     after(function () {
     });
+    //Add key test with prefix
+    it('should Add key to cache with repfix ', function () { return __awaiter(_this, void 0, void 0, function () {
+        var tp, tr, result1, prefixresult1;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, client.setAsync('samplekey1', 'samplevalue1')];
+                case 1:
+                    _a.sent();
+                    tp = path.join(__dirname, "redisCacheAddKeyTests", 'redisCacheAddKey_withPrefix.js');
+                    tr = new ttm.MockTestRunner(tp);
+                    tr.run();
+                    return [4 /*yield*/, client.getAsync('samplekey1')];
+                case 2:
+                    result1 = _a.sent();
+                    assert.equal(tr.succeeded, true, 'should have succeeded');
+                    assert.equal(tr.warningIssues.length, 0, "should have no warnings");
+                    assert.equal(tr.errorIssues.length, 0, "should have no errors");
+                    assert.equal(result1.toString(), 'samplevalue1', "Cache key 1 should not update after task");
+                    return [4 /*yield*/, client.getAsync('sampleprefixsamplekey1')];
+                case 3:
+                    prefixresult1 = _a.sent();
+                    assert.equal(prefixresult1.toString(), 'sampleprefixValue1', "Cache key 1 should be added");
+                    return [4 /*yield*/, Promise.resolve()];
+                case 4:
+                    _a.sent();
+                    return [2 /*return*/];
+            }
+        });
+    }); }).timeout(10000);
+    //Add key test without prefix
+    it('should Add key to cache without prefix', function () { return __awaiter(_this, void 0, void 0, function () {
+        var tp, tr, result1;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    tp = path.join(__dirname, "redisCacheAddKeyTests", 'redisCacheAddKey_withoutPrefix.js');
+                    tr = new ttm.MockTestRunner(tp);
+                    tr.run();
+                    return [4 /*yield*/, client.getAsync('samplekey1')];
+                case 1:
+                    result1 = _a.sent();
+                    assert.equal(tr.succeeded, true, 'should have succeeded');
+                    assert.equal(tr.warningIssues.length, 0, "should have no warnings");
+                    assert.equal(tr.errorIssues.length, 0, "should have no errors");
+                    assert.equal(result1.toString(), 'sampleNewValue1', "New Key should be updated");
+                    return [4 /*yield*/, Promise.resolve()];
+                case 2:
+                    _a.sent();
+                    return [2 /*return*/];
+            }
+        });
+    }); }).timeout(10000);
     //Flush all test
-    it('should succeed flush all', function () { return __awaiter(_this, void 0, void 0, function () {
+    it('should succeed flush all without prefix', function () { return __awaiter(_this, void 0, void 0, function () {
         var before_result1, before_result2, tp, tr, result1, result2;
         return __generator(this, function (_a) {
             switch (_a.label) {
@@ -87,7 +139,7 @@ describe('Cache Clear Tests', function () {
                     return [4 /*yield*/, client.getAsync('samplekey2')];
                 case 4:
                     before_result2 = _a.sent();
-                    tp = path.join(__dirname, 'flushallsuccess.js');
+                    tp = path.join(__dirname, "redisCacheFlushAllTests", 'redisCacheFlushAll_withoutPrefix.js');
                     tr = new ttm.MockTestRunner(tp);
                     tr.run();
                     return [4 /*yield*/, client.getAsync('samplekey1')];
@@ -111,7 +163,7 @@ describe('Cache Clear Tests', function () {
         });
     }); }).timeout(10000);
     //delete cache key test
-    it('should succeed delete key', function () { return __awaiter(_this, void 0, void 0, function () {
+    it('should succeed delete key without prefix', function () { return __awaiter(_this, void 0, void 0, function () {
         var before_result1, before_result2, tp, tr, result1, result2;
         return __generator(this, function (_a) {
             switch (_a.label) {
@@ -127,10 +179,50 @@ describe('Cache Clear Tests', function () {
                     return [4 /*yield*/, client.getAsync('samplekey2')];
                 case 4:
                     before_result2 = _a.sent();
-                    tp = path.join(__dirname, 'deletekeysuccess.js');
+                    tp = path.join(__dirname, "redisCacheClearKeyTests", 'redisCacheClearKey_withoutPrefix.js');
                     tr = new ttm.MockTestRunner(tp);
                     tr.run();
                     return [4 /*yield*/, client.getAsync('samplekey1')];
+                case 5:
+                    result1 = _a.sent();
+                    return [4 /*yield*/, client.getAsync('samplekey2')];
+                case 6:
+                    result2 = _a.sent();
+                    assert.equal(tr.succeeded, true, 'should have succeeded');
+                    assert.equal(tr.warningIssues.length, 0, "should have no warnings");
+                    assert.equal(tr.errorIssues.length, 0, "should have no errors");
+                    assert.equal(before_result1.toString(), 'samplevalue1', "Cache key 1 updated");
+                    assert.equal(before_result2.toString(), 'samplevalue2', "Cache key 2 updated");
+                    assert.equal(result1, null, "Cache key 1 removed");
+                    assert.equal(result2, 'samplevalue2', "Cache key 2 should not removed");
+                    return [4 /*yield*/, Promise.resolve()];
+                case 7:
+                    _a.sent();
+                    return [2 /*return*/];
+            }
+        });
+    }); }).timeout(10000);
+    //delete cache key test
+    it('should succeed delete key with prefix', function () { return __awaiter(_this, void 0, void 0, function () {
+        var before_result1, before_result2, tp, tr, result1, result2;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, client.setAsync('sampleprefixsamplekey1', 'samplevalue1')];
+                case 1:
+                    _a.sent();
+                    return [4 /*yield*/, client.setAsync('samplekey2', 'samplevalue2')];
+                case 2:
+                    _a.sent();
+                    return [4 /*yield*/, client.getAsync('sampleprefixsamplekey1')];
+                case 3:
+                    before_result1 = _a.sent();
+                    return [4 /*yield*/, client.getAsync('samplekey2')];
+                case 4:
+                    before_result2 = _a.sent();
+                    tp = path.join(__dirname, "redisCacheClearKeyTests", 'redisCacheClearKey_withPrefix.js');
+                    tr = new ttm.MockTestRunner(tp);
+                    tr.run();
+                    return [4 /*yield*/, client.getAsync('sampleprefixsamplekey1')];
                 case 5:
                     result1 = _a.sent();
                     return [4 /*yield*/, client.getAsync('samplekey2')];
@@ -156,7 +248,7 @@ describe('Cache Clear Tests', function () {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    tp = path.join(__dirname, 'failure.js');
+                    tp = path.join(__dirname, "redisCacheClearKeyTests", 'redisCacheClearKey_failure.js');
                     tr = new ttm.MockTestRunner(tp);
                     tr.run();
                     assert.equal(tr.succeeded, true, 'should have succeeded');

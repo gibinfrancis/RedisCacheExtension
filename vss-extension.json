@@ -1,16 +1,16 @@
 {
     "manifestVersion": 1,
     "id": "redis-cache-clear",
-    "name": "Redis Cache Clear",
-    "version": "1.0.4",
+    "name": "Redis Cache Utils",
+    "version": "1.0.7",
     "publisher": "gbnz",
+    "description": "Extention to Add/Delete/Flush Redis cache",
     "public": true,
     "targets": [
         {
             "id": "Microsoft.VisualStudio.Services"
         }
-    ],    
-    "description": "Extention to clear specific key or run flush all command in the redis server",
+    ],        
     "categories": [
         "Azure Pipelines"
     ],
@@ -19,7 +19,21 @@
     },
     "files": [
         {
-            "path" : "redisCacheClear"
+            "path" : "redisCacheUtils/redisCacheAddKey"
+        },
+        {
+            "path" : "redisCacheUtils/redisCacheClearKey"
+        },
+        {
+            "path" : "redisCacheUtils/redisCacheFlushAll"
+        },
+        {
+            "path": "images",
+            "addressable": true
+        },
+        {
+            "path": "redisCacheUtils",
+            "addressable": true
         }
     ],
     "content": {
@@ -27,16 +41,43 @@
             "path": "overview.md"
         }
     },
+    "tags": [
+        "utility",
+        "tasks"
+    ],
+    "branding": {
+        "color": "#ff0000",
+        "theme": "light"
+    },	
     "contributions": [
         {
-            "id": "rediscacheclear-release-task",
+            "id": "redisCacheAddKey-release-task",
             "type": "ms.vss-distributed-task.task",
             "targets": [
                 "ms.vss-distributed-task.tasks"
             ],
             "properties": {
-                "name": "rediscacheclear",
-                "icon" : "images/extension-icon.png"
+                "name": "redisCacheUtils/redisCacheAddKey"
+            }
+        },
+        {
+            "id": "redisCacheClearKey-release-task",
+            "type": "ms.vss-distributed-task.task",
+            "targets": [
+                "ms.vss-distributed-task.tasks"
+            ],
+            "properties": {
+                "name": "redisCacheUtils/redisCacheClearKey"
+            }
+        },
+        {
+            "id": "redisCacheFlushAll-release-task",
+            "type": "ms.vss-distributed-task.task",
+            "targets": [
+                "ms.vss-distributed-task.tasks"
+            ],
+            "properties": {
+                "name": "redisCacheUtils/redisCacheFlushAll"
             }
         }
     ]
