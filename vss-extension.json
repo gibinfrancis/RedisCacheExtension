@@ -2,7 +2,7 @@
     "manifestVersion": 1,
     "id": "redis-cache-clear",
     "name": "Redis Cache Utils",
-    "version": "1.0.7",
+    "version": "1.0.8",
     "publisher": "gbnz",
     "description": "Extention to Add/Delete/Flush Redis cache",
     "public": true,
@@ -41,14 +41,21 @@
             "path": "overview.md"
         }
     },
+    "links": {
+        "getstarted": {
+            "uri": "https://github.com/gibinfrancis/RedisCacheExtension/blob/master/overview.md"
+        },
+        "issues": {
+            "uri": "https://github.com/gibinfrancis/RedisCacheExtension/issues"
+        },
+        "repository": {
+            "uri": "https://github.com/gibinfrancis/RedisCacheExtension"
+        }
+	},
     "tags": [
         "utility",
         "tasks"
     ],
-    "branding": {
-        "color": "#ff0000",
-        "theme": "light"
-    },	
     "contributions": [
         {
             "id": "redisCacheAddKey-release-task",
