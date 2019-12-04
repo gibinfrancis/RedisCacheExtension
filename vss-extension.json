@@ -2,7 +2,7 @@
     "manifestVersion": 1,
     "id": "redis-cache-clear",
     "name": "Redis Cache Utils",
-    "version": "1.0.8",
+    "version": "1.0.11",
     "publisher": "gbnz",
     "description": "Extention to Add/Delete/Flush Redis cache",
     "public": true,
@@ -26,6 +26,15 @@
         },
         {
             "path" : "redisCacheUtils/redisCacheFlushAll"
+        },
+        {
+            "path": "redisCacheUtils/node_modules/azure-pipelines-task-lib"
+        },
+        {
+            "path": "redisCacheUtils/node_modules/redis"
+        },
+        {
+            "path": "redisCacheUtils/node_modules/bluebird"
         },
         {
             "path": "images",

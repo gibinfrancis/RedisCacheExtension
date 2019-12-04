@@ -37,8 +37,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var tl = require("azure-pipelines-task-lib/task");
-var redis = require('../node_modules/redis');
-var bluebird = require("../node_modules/bluebird");
+var redis = require('redis');
+var bluebird = require("bluebird");
 bluebird.promisifyAll(redis.RedisClient.prototype);
 bluebird.promisifyAll(redis.Multi.prototype);
 function run() {
