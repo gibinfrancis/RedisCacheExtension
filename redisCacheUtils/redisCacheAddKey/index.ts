@@ -14,6 +14,8 @@ async function run() {
         const _redisport: string = tl.getInput('redisport', true)!;
         //key to authenticate to the redis server
         const _rediskey: string = tl.getInput('rediskey', true)!;
+        //authentication method for the redis server
+        const _redisPwdType: string = tl.getInput('redisPwdType', true)!;
         //prefix key in the redis server
         const _redisprefix: string = tl.getInput('redisprefix', false)!;
         //Cache key which need to be added
@@ -36,9 +38,7 @@ async function run() {
         //creating redis options
         var _redisOptions = {
             auth_pass : _rediskey,
-            tls : {
-                servername : _redishost
-            },
+            tls :  (_redisPwdType == 'sas') ? { servername : _redishost } : null,
             prefix : (_redisprefix == '' || _redisprefix == null) ? null :  _redisprefix
         };
 
@@ -47,7 +47,6 @@ async function run() {
 
         //adding the key
         var result = await client.set(_redisCachekey, _rediscachevalue);
-        var aa = await client.get(_redisCachekey);
 
         if(result!= null)
         {

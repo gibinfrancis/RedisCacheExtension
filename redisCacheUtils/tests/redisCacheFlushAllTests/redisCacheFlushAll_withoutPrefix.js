@@ -8,4 +8,5 @@ var tmr = new tmrm.TaskMockRunner(taskPath);
 tmr.setInput('redishost', constants._redishost);
 tmr.setInput('redisport', constants._redisport);
 tmr.setInput('rediskey', constants._rediskey);
+tmr.setInput('redisPwdType', constants._redisPwdType);
 tmr.run();

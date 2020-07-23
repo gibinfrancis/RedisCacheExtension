@@ -1,20 +1,59 @@
 # Redis Cache Clear
 
-This is a basic Release plugin for Azure DevOps release pipeline.
-It uses the key based authentication to connect to the Redis server.
+Azure devops release plugin to handle redis cache related tasks from the pipeline.
 
+While devloping an application with redis and azure devops you might end up in a situation that you need to Add/Delete/Flush your redis cache keys after a relase. The you can use the task to implement the same. 
+
+tasks available in the extension
 
 ## Add Cache key 
 
-You can cadd cache key and value while running this task from the Devops pipeline
+You can create a cache entry on your Redis server using the task
+
+| Paremeter Name | Required | Descritption |
+|---|---|---|
+| Redis Host Name | true |  Redis host name or url of your redis server (eg : {{yourrediscache}}.redis.cache.windows.net or 127.0.0.1)
+| Redis Port Number | true | Port number of Redis Server
+| Redis Authentiction key | true | It Can be SAS authentication key if you are using "Azure Cache for Redis" else it can be your Redis Server password
+| Authentication Method | true | Authentication method, Choose one from "SAS Authentication key" or "Password"
+| Redis prefix key | false | Prefix for the key in case if you want any
+| Redis Cache key | true | Key for the cache entry
+|Redis Cache Value | true | Value for the cache entry
+
 
 ## Flush All
 
-This will trigger the flush all command on the redis server.
+You can clear all the content on your Redis server.
+
+| Paremeter Name | Required | Descritption |
+|---|---|---|
+| Redis Host Name | true |  Redis host name or url of your redis server (eg : {{yourrediscache}}.redis.cache.windows.net or 127.0.0.1)
+| Redis Port Number | true | Port number of Redis Server
+| Redis Authentiction key | true | It Can be SAS authentication key if you are using "Azure Cache for Redis" else it can be your Redis Server password
+| Authentication Method | true | Authentication method, Choose one from "SAS Authentication key" or "Password"
+| Redis prefix key | false | Prefix for the keys in case if you want any
 
 ## Delete Cache Key
 
-Please use desired Redis Cache key which need to be delete.
-Then the specific key will be removed from the Redis.
+You can clear a specific key from the Redis server.
+
+| Paremeter Name | Required | Descritption |
+|---|---|---|
+| Redis Host Name | true |  Redis host name or url of your redis server (eg : {{yourrediscache}}.redis.cache.windows.net or 127.0.0.1)
+| Redis Port Number | true | Port number of Redis Server
+| Redis Authentiction key | true | It Can be SAS authentication key if you are using "Azure Cache for Redis" else it can be your Redis Server password
+| Authentication Method | true | Authentication method, Choose one from "SAS Authentication key" or "Password"
+| Redis prefix key | false | Prefix for the key in case if you want any
+| Redis Cache key | true | Key for the cache entry
 
 
+
+
+
+
+
+### Release Notes
+
+| Version | Date | Changes |
+| --- | --- | --- |
+|1.0.12 | 23-07-2020 | Included the option to login to the Redis with password. It was supporting only SAS Token on the previous builds

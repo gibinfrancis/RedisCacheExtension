@@ -16,16 +16,17 @@ describe('Cache Clear Tests', function () {
     const _redisport: string = constants._redisport;
     //key to authenticate to the redis server
     const _rediskey: string = constants._rediskey;
+    //authentication method for the redis server
+    const _redisPwdType: string = constants._redisPwdType;
 
-
+    
     //creating redis connetion
     var client = redis.createClient( _redisport, _redishost,
         {
             auth_pass : _rediskey,
-            tls : {
-                servername : _redishost
-            }
-    });
+            tls :  (_redisPwdType == 'sas') ?  { servername : _redishost } : null
+        }
+    );
 
     before(function () {
 
@@ -38,7 +39,7 @@ describe('Cache Clear Tests', function () {
     //Add key test with prefix
     it('should Add key to cache with repfix ', async () => {
 
-        
+
         await client.setAsync('samplekey1', 'samplevalue1');
         
         let tp = path.join(__dirname, "redisCacheAddKeyTests", 'redisCacheAddKey_withPrefix.js');        

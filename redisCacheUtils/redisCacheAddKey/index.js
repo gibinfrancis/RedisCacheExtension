@@ -43,14 +43,15 @@ bluebird.promisifyAll(redis.RedisClient.prototype);
 bluebird.promisifyAll(redis.Multi.prototype);
 function run() {
     return __awaiter(this, void 0, void 0, function () {
-        var _redishost, _redisport, _rediskey, _redisprefix, _redisCachekey, _rediscachevalue, _redisOptions, client, result, aa, err_1;
+        var _redishost, _redisport, _rediskey, _redisPwdType, _redisprefix, _redisCachekey, _rediscachevalue, _redisOptions, client, result, err_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    _a.trys.push([0, 4, , 5]);
+                    _a.trys.push([0, 3, , 4]);
                     _redishost = tl.getInput('redishost', true);
                     _redisport = tl.getInput('redisport', true);
                     _rediskey = tl.getInput('rediskey', true);
+                    _redisPwdType = tl.getInput('redisPwdType', true);
                     _redisprefix = tl.getInput('redisprefix', false);
                     _redisCachekey = tl.getInput('rediscachekey', true);
                     _rediscachevalue = tl.getInput('rediscachevalue', true);
@@ -66,34 +67,29 @@ function run() {
                     }
                     _redisOptions = {
                         auth_pass: _rediskey,
-                        tls: {
-                            servername: _redishost
-                        },
+                        tls: (_redisPwdType == 'sas') ? { servername: _redishost } : null,
                         prefix: (_redisprefix == '' || _redisprefix == null) ? null : _redisprefix
                     };
                     client = redis.createClient(_redisport, _redishost, _redisOptions);
                     return [4 /*yield*/, client.set(_redisCachekey, _rediscachevalue)];
                 case 1:
                     result = _a.sent();
-                    return [4 /*yield*/, client.get(_redisCachekey)];
-                case 2:
-                    aa = _a.sent();
                     if (result != null) {
                         tl.setResult(tl.TaskResult.Succeeded, 'Cache key ' + _redisCachekey + ' addded successfully');
                         console.log('Cache key ' + _redisCachekey + ' addded successfully');
                     }
                     //closing the connection to the redis server
                     return [4 /*yield*/, client.quit()];
-                case 3:
+                case 2:
                     //closing the connection to the redis server
                     _a.sent();
                     return [2 /*return*/];
-                case 4:
+                case 3:
                     err_1 = _a.sent();
                     //Seting the Status of the task in case if any exception
                     tl.setResult(tl.TaskResult.Failed, err_1.message);
-                    return [3 /*break*/, 5];
-                case 5: return [2 /*return*/];
+                    return [3 /*break*/, 4];
+                case 4: return [2 /*return*/];
             }
         });
     });

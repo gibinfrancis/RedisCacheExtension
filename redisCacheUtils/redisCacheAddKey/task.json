@@ -39,6 +39,18 @@
             "helpMarkDown": "Redis Authentiction Key"
         },
         {
+            "name": "redisPwdType",
+            "type": "radio",
+            "label": "Authentication Method",
+            "required": true,
+            "defaultValue": "sas",
+            "helpMarkDown": "Use SAS for azure redis cache server and use password for remote server",
+            "options": {
+              "sas": "SAS Authentication key",
+              "pwd": "Password"
+            }
+        },
+        {
             "name": "redisprefix",
             "type": "string",
             "label": "Redis prefix key",
