@@ -1,7 +1,6 @@
 "use strict";
 module.exports = Object.freeze({
-    _redishost: 'localhost',
+    _redishost: '127.0.0.1',
     _redisport: '6379',
-    _rediskey: 'pass',
-    _redisPwdType: 'pwd'
+    _redisdb: '0',
 });

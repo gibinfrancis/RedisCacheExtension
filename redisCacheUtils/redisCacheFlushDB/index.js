@@ -43,7 +43,7 @@ bluebird.promisifyAll(redis.RedisClient.prototype);
 bluebird.promisifyAll(redis.Multi.prototype);
 function run() {
     return __awaiter(this, void 0, void 0, function () {
-        var _redishost, _redisport, _rediskey, _redisPwdType, _redisOptions, client, flushallresult, err_1;
+        var _redishost, _redisport, _rediskey, _redisPwdType, _redisdb, _redisOptions, client, flushallresult, err_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -52,6 +52,7 @@ function run() {
                     _redisport = tl.getInput('redisport', true);
                     _rediskey = tl.getInput('rediskey', true);
                     _redisPwdType = tl.getInput('redisPwdType', true);
+                    _redisdb = tl.getInput('redisdb', true);
                     //Checking for all required fields
                     if (_redishost == '' ||
                         _redisport == '' ||
@@ -62,10 +63,11 @@ function run() {
                     }
                     _redisOptions = {
                         auth_pass: _rediskey,
-                        tls: (_redisPwdType == 'sas') ? { servername: _redishost } : null
+                        tls: (_redisPwdType == 'sas') ? { servername: _redishost } : null,
+                        db: (_redisdb == null) ? '0' : _redisdb
                     };
                     client = redis.createClient(_redisport, _redishost, _redisOptions);
-                    return [4 /*yield*/, client.flushall()];
+                    return [4 /*yield*/, client.flushdb()];
                 case 1:
                     flushallresult = _a.sent();
                     if (flushallresult != null) {

@@ -73,10 +73,19 @@ describe('Cache Clear Tests', function () {
     var _rediskey = constants._rediskey;
     //authentication method for the redis server
     var _redisPwdType = constants._redisPwdType;
+    //authentication method for the redis server
+    var _redisdb = constants._redisPwdType;
     //creating redis connetion
     var client = redis.createClient(_redisport, _redishost, {
         auth_pass: _rediskey,
-        tls: (_redisPwdType == 'sas') ? { servername: _redishost } : null
+        tls: (_redisPwdType == 'sas') ? { servername: _redishost } : null,
+        db: _redisdb
+    });
+    //creating redis connetion
+    var client_second = redis.createClient(_redisport, _redishost, {
+        auth_pass: _rediskey,
+        tls: (_redisPwdType == 'sas') ? { servername: _redishost } : null,
+        db: '1'
     });
     before(function () {
     });
@@ -87,11 +96,8 @@ describe('Cache Clear Tests', function () {
         var tp, tr, result1, prefixresult1;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: 
-                //await client.auth(_rediskey);
-                return [4 /*yield*/, client.setAsync('samplekey1', 'samplevalue1')];
+                case 0: return [4 /*yield*/, client.setAsync('samplekey1', 'samplevalue1')];
                 case 1:
-                    //await client.auth(_rediskey);
                     _a.sent();
                     tp = path.join(__dirname, "redisCacheAddKeyTests", 'redisCacheAddKey_withPrefix.js');
                     tr = new ttm.MockTestRunner(tp);
@@ -271,6 +277,66 @@ describe('Cache Clear Tests', function () {
                     assert.equal(tr.errorIssues.length, 0, "should have no errors");
                     return [4 /*yield*/, Promise.resolve()];
                 case 1:
+                    _a.sent();
+                    return [2 /*return*/];
+            }
+        });
+    }); }).timeout(10000);
+    //Flush DB test
+    it('should succeed flush DB without prefix', function () { return __awaiter(_this, void 0, void 0, function () {
+        var before_result1, before_result2, before_result1_second, before_result2_second, tp, tr, result1, result2, result1_second, result2_second;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, client.setAsync('samplekey1', 'samplevalue1')];
+                case 1:
+                    _a.sent();
+                    return [4 /*yield*/, client.setAsync('samplekey2', 'samplevalue2')];
+                case 2:
+                    _a.sent();
+                    return [4 /*yield*/, client.getAsync('samplekey1')];
+                case 3:
+                    before_result1 = _a.sent();
+                    return [4 /*yield*/, client.getAsync('samplekey2')];
+                case 4:
+                    before_result2 = _a.sent();
+                    return [4 /*yield*/, client_second.setAsync('samplekey1', 'samplevalue1')];
+                case 5:
+                    _a.sent();
+                    return [4 /*yield*/, client_second.setAsync('samplekey2', 'samplevalue2')];
+                case 6:
+                    _a.sent();
+                    return [4 /*yield*/, client_second.getAsync('samplekey1')];
+                case 7:
+                    before_result1_second = _a.sent();
+                    return [4 /*yield*/, client_second.getAsync('samplekey2')];
+                case 8:
+                    before_result2_second = _a.sent();
+                    tp = path.join(__dirname, "redisCacheFlushDBTests", 'redisCacheFlushDB_withoutPrefix.js');
+                    tr = new ttm.MockTestRunner(tp);
+                    tr.run();
+                    return [4 /*yield*/, client.getAsync('samplekey1')];
+                case 9:
+                    result1 = _a.sent();
+                    return [4 /*yield*/, client.getAsync('samplekey2')];
+                case 10:
+                    result2 = _a.sent();
+                    return [4 /*yield*/, client_second.getAsync('samplekey1')];
+                case 11:
+                    result1_second = _a.sent();
+                    return [4 /*yield*/, client_second.getAsync('samplekey2')];
+                case 12:
+                    result2_second = _a.sent();
+                    assert.equal(tr.succeeded, true, 'should have succeeded');
+                    assert.equal(tr.warningIssues.length, 0, "should have no warnings");
+                    assert.equal(tr.errorIssues.length, 0, "should have no errors");
+                    assert.equal(before_result1.toString(), 'samplevalue1', "Cache key 1 updated");
+                    assert.equal(before_result2.toString(), 'samplevalue2', "Cache key 2 updated");
+                    assert.equal(result1, null, "Cache key 1 removed");
+                    assert.equal(result2, null, "Cache key 2 removed");
+                    assert.equal(result1_second, before_result1_second, "Other DB Cache key 1 retained");
+                    assert.equal(result2_second, before_result2_second, "Other DB Cache key 2 retained");
+                    return [4 /*yield*/, Promise.resolve()];
+                case 13:
                     _a.sent();
                     return [2 /*return*/];
             }

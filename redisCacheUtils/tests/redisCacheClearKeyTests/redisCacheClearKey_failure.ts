@@ -13,5 +13,6 @@ tmr.setInput('rediskey', constants._rediskey);
 tmr.setInput('redisPwdType', constants._redisPwdType);
 tmr.setInput('redisprefix', 'sampleprefix');
 tmr.setInput('rediscachekey', 'samplekey1');
+tmr.setInput('redisdb', constants._redisdb);
 
 tmr.run();

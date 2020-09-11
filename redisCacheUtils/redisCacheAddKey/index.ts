@@ -22,6 +22,8 @@ async function run() {
         const _redisCachekey: string = tl.getInput('rediscachekey', true)!;
         //Cache value which need to be added
         const _rediscachevalue: string = tl.getInput('rediscachevalue', true)!;
+        //db index in the redis server
+        const _redisdb: string = tl.getInput('redisdb', true)!;
         
         //Checking for all required fields
         if (_redishost == '' || 
@@ -39,7 +41,8 @@ async function run() {
         var _redisOptions = {
             auth_pass : _rediskey,
             tls :  (_redisPwdType == 'sas') ? { servername : _redishost } : null,
-            prefix : (_redisprefix == '' || _redisprefix == null) ? null :  _redisprefix
+            prefix : (_redisprefix == '' || _redisprefix == null) ? null :  _redisprefix,
+            db : (_redisdb == null) ? '0' : _redisdb
         };
 
         //creating redis connetion

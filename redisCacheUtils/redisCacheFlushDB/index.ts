@@ -16,6 +16,8 @@ async function run() {
         const _rediskey: string = tl.getInput('rediskey', true)!;
         //authentication method for the redis server
         const _redisPwdType: string = tl.getInput('redisPwdType', true)!;
+        //db index in the redis server
+        const _redisdb: string = tl.getInput('redisdb', true)!;
         
         //Checking for all required fields
         if (_redishost == '' || 
@@ -31,14 +33,15 @@ async function run() {
         //creating redis options
         var _redisOptions = {
             auth_pass : _rediskey,
-            tls :  (_redisPwdType == 'sas') ? { servername : _redishost } : null
+            tls :  (_redisPwdType == 'sas') ? { servername : _redishost } : null,
+            db : (_redisdb == null) ? '0' : _redisdb
         };
 
         //creating redis connetion
         var client = redis.createClient(_redisport, _redishost, _redisOptions);
 
         //flushing the redis server
-        var flushallresult = await client.flushall();
+        var flushallresult = await client.flushdb();
         if(flushallresult!= null)
         {
             tl.setResult(tl.TaskResult.Succeeded, 'Cache flushed successfully');

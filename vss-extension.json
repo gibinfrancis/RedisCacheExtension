@@ -2,7 +2,7 @@
     "manifestVersion": 1,
     "id": "redis-cache-clear",
     "name": "Redis Cache Utils",
-    "version": "1.0.12",
+    "version": "1.0.13",
     "publisher": "gbnz",
     "description": "Extention to Add/Delete/Flush Redis cache",
     "public": true,
@@ -94,6 +94,16 @@
             ],
             "properties": {
                 "name": "redisCacheUtils/redisCacheFlushAll"
+            }
+        },
+        {
+            "id": "redisCacheFlushDB-release-task",
+            "type": "ms.vss-distributed-task.task",
+            "targets": [
+                "ms.vss-distributed-task.tasks"
+            ],
+            "properties": {
+                "name": "redisCacheUtils/redisCacheFlushDB"
             }
         }
     ]

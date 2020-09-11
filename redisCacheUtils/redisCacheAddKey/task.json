@@ -73,7 +73,15 @@
             "defaultValue": "",
             "required": true,
             "helpMarkDown": "Cache Value to set to the server"
-        }     
+        },
+        {
+            "name": "redisdb",
+            "type": "string",
+            "label": "Redis DB index",
+            "defaultValue": "0",
+            "required": true,
+            "helpMarkDown": "Redis DB index"
+        }  
     ],
     "execution": {
         "Node10": {

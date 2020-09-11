@@ -43,7 +43,7 @@ bluebird.promisifyAll(redis.RedisClient.prototype);
 bluebird.promisifyAll(redis.Multi.prototype);
 function run() {
     return __awaiter(this, void 0, void 0, function () {
-        var _redishost, _redisport, _rediskey, _redisPwdType, _redisprefix, _redisCachekey, _redisOptions, client, delKeyResult, err_1;
+        var _redishost, _redisport, _rediskey, _redisPwdType, _redisprefix, _redisCachekey, _redisdb, _redisOptions, client, delKeyResult, err_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -54,6 +54,7 @@ function run() {
                     _redisPwdType = tl.getInput('redisPwdType', true);
                     _redisprefix = tl.getInput('redisprefix', false);
                     _redisCachekey = tl.getInput('rediscachekey', true);
+                    _redisdb = tl.getInput('redisdb', true);
                     //Checking for all required fields
                     if (_redishost == '' ||
                         _redisport == '' ||
@@ -66,7 +67,8 @@ function run() {
                     _redisOptions = {
                         auth_pass: _rediskey,
                         tls: (_redisPwdType == 'sas') ? { servername: _redishost } : null,
-                        prefix: (_redisprefix == '' || _redisprefix == null) ? null : _redisprefix
+                        prefix: (_redisprefix == '' || _redisprefix == null) ? null : _redisprefix,
+                        db: (_redisdb == null) ? '0' : _redisdb
                     };
                     client = redis.createClient(_redisport, _redishost, _redisOptions);
                     return [4 /*yield*/, client.del(_redisCachekey)];

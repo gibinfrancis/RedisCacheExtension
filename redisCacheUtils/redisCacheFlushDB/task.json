@@ -1,9 +1,9 @@
 {
     "$schema": "https://raw.githubusercontent.com/Microsoft/azure-pipelines-task-lib/master/tasks.schema.json",
-    "id": "98e620c4-e2ad-47cd-bda0-41b028296cbb",
-    "name": "redisCacheClearKey",
-    "friendlyName": "Redis Cache Clear Key",
-    "description": "Clear specific key in the redis server",
+    "id": "2adf5d8e-029c-4ee6-8dbc-0a895ec2ce05",
+    "name": "redisCacheFlushDB",
+    "friendlyName": "Redis Cache Flush DB",
+    "description": "Runs Flush DB command in the redis server on the specific DB",
     "helpMarkDown": "",
     "category": "Utility",
     "author": "Gibin Francis",
@@ -12,7 +12,7 @@
         "Minor": 0,
         "Patch": 0
     },
-    "instanceNameFormat": "Redis Cache Clear Key",
+    "instanceNameFormat": "Redis Cache Flush DB",
     "inputs": [
         {
             "name": "redishost",
@@ -51,29 +51,13 @@
             }
         },
         {
-            "name": "redisprefix",
-            "type": "string",
-            "label": "Redis prefix key",
-            "defaultValue": "",
-            "required": false,
-            "helpMarkDown": "Redis prefix Key"
-        },
-        {
-            "name": "rediscachekey",
-            "type": "string",
-            "label": "Redis Cache key",
-            "defaultValue": "",
-            "required": true,
-            "helpMarkDown": "Cache key to get deleted from the server"
-        },
-        {
             "name": "redisdb",
             "type": "string",
             "label": "Redis DB index",
             "defaultValue": "0",
             "required": true,
             "helpMarkDown": "Redis DB index"
-        }        
+        }
     ],
     "execution": {
         "Node10": {

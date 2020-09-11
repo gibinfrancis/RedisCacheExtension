@@ -20,6 +20,8 @@ async function run() {
          const _redisprefix: string = tl.getInput('redisprefix', false)!;
         //Cache key which need to be deleted
         const _redisCachekey: string = tl.getInput('rediscachekey', true)!;
+         //db index in the redis server
+         const _redisdb: string = tl.getInput('redisdb', true)!;
         
         //Checking for all required fields
         if (_redishost == '' || 
@@ -37,7 +39,8 @@ async function run() {
         var _redisOptions = {
             auth_pass : _rediskey,
             tls :  (_redisPwdType == 'sas') ? { servername : _redishost } : null,
-            prefix : (_redisprefix == '' || _redisprefix == null) ? null :  _redisprefix
+            prefix : (_redisprefix == '' || _redisprefix == null) ? null :  _redisprefix,
+            db : (_redisdb == null) ? '0' : _redisdb
         };
 
         //creating redis connetion

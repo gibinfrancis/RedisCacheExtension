@@ -49,15 +49,7 @@
               "sas": "SAS Authentication key",
               "pwd": "Password"
             }
-        },
-        {
-            "name": "redisprefix",
-            "type": "string",
-            "label": "Redis prefix key",
-            "defaultValue": "",
-            "required": false,
-            "helpMarkDown": "Redis prefix Key"
-        }   
+        }
     ],
     "execution": {
         "Node10": {
